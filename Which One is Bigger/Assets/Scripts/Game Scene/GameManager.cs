@@ -47,8 +47,6 @@ public class GameManager : MonoBehaviour
         UpdateGameObjectTransform();
     }
 
-    
-  
     void UpdateAlpha()
     {
         foreach (var alpha in alphaImage)
@@ -77,24 +75,58 @@ public class GameManager : MonoBehaviour
 
     void WhichLevel()
     {
-        if (gameCounter<5)
+        if (gameCounter < 5)
         {
             isLevel = 1;
         }
+        else if (gameCounter >= 5 && gameCounter < 10)
+        {
+            isLevel = 2;
+        }
+        else if (gameCounter >= 10 && gameCounter < 15)
+        {
+            isLevel = 3;
+        }
+        else if (gameCounter >= 15 && gameCounter < 20)
+        {
+            isLevel = 4;
+        }
+        else if (gameCounter >= 20 && gameCounter < 25)
+        {
+            isLevel = 5;
+        }
+        else
+        {
+            isLevel = Random.Range(1, 6);
+        }
+
 
         switch (isLevel)
         {
             case 1:
                 Level1();
                 break;
+            case 2:
+                Level2();
+                break;
+            case 3:
+                Level3();
+                break;
+            case 4:
+                Level4();
+                break;
+            case 5:
+                Level5();
+                break;
+
         }
     }
 
     void Level1()
     {
-        int randomValue = Random.Range(startValue, finishValue);
+        int randomValue = Random.Range(value1, finishValue);
 
-        if (randomValue<=25)
+        if (randomValue <= 25)
         {
             upValue = Random.Range(value2, finishValue);
             downValue = upValue + Random.Range(value1, finishValue);
@@ -118,7 +150,135 @@ public class GameManager : MonoBehaviour
         downText.text = downValue.ToString();
 
 
-        Debug.Log("Bigger: " + biggerValue);
+        //Debug.Log("Bigger: " + biggerValue);
+    }
+
+    void Level2()
+    {
+        int firstNumber = Random.Range(1, 10);
+        int secondNumber = Random.Range(1, 20);
+        int thirdNumber = Random.Range(1, 10);
+        int fourthNumber = Random.Range(1, 20);
+
+
+        upValue = firstNumber + secondNumber;
+        downValue = thirdNumber + fourthNumber;
+
+        if (upValue > downValue)
+        {
+            biggerValue = upValue;
+        }
+        else if(upValue < downValue)
+        {
+            biggerValue = downValue;
+        }
+
+        if (upValue == downValue)
+        {
+            Level2();
+            return;
+        }
+
+        upText.text = firstNumber + " + " + secondNumber;
+        downText.text = thirdNumber + " + " + fourthNumber;
+
+    }
+
+    void Level3()
+    {
+        int firstNumber = Random.Range(11, 20);
+        int secondNumber = Random.Range(1, 11);
+        int thirdNumber = Random.Range(1, 20);
+
+        int fourthNumber = Random.Range(11, 20);
+        int fifthNumber = Random.Range(1, 11);
+        int sixthNumber = Random.Range(1, 20);
+
+
+
+        upValue = firstNumber - secondNumber + thirdNumber;
+        downValue = fourthNumber - fifthNumber + sixthNumber;
+
+        if (upValue > downValue)
+        {
+            biggerValue = upValue;
+        }
+        else if (upValue < downValue)
+        {
+            biggerValue = downValue;
+        }
+
+        if (upValue == downValue)
+        {
+            Level3();
+            return;
+        }
+
+        upText.text = firstNumber + " - " + secondNumber + " + " + thirdNumber;
+        downText.text = fourthNumber + " - " + fifthNumber + " + " + sixthNumber;
+    }
+
+    void Level4()
+    {
+        int firstNumber = Random.Range(1, 15);
+        int secondNumber = Random.Range(1, 10);
+        int thirdNumber = Random.Range(1, 15);
+        int fourthNumber = Random.Range(1, 10);
+
+
+        upValue = firstNumber * secondNumber;
+        downValue = thirdNumber * fourthNumber;
+
+        if (upValue > downValue)
+        {
+            biggerValue = upValue;
+        }
+        else if (upValue < downValue)
+        {
+            biggerValue = downValue;
+        }
+
+        if (upValue == downValue)
+        {
+            Level4();
+            return;
+        }
+
+        upText.text = firstNumber + " x " + secondNumber;
+        downText.text = thirdNumber + " x " + fourthNumber;
+    }
+
+    void Level5()
+    {
+        int firstNumber = Random.Range(15, 50);
+        int secondNumber = Random.Range(1, 15);
+        int thirdNumber = Random.Range(1, 10);
+
+        int fourthNumber = Random.Range(1, 15);
+        int fifthNumber = Random.Range(15, 50);
+        int sixthNumber = Random.Range(1, 10);
+
+
+        upValue = firstNumber - secondNumber + (thirdNumber * secondNumber);
+        downValue = fifthNumber - fourthNumber + (fourthNumber * sixthNumber);
+
+        if (upValue > downValue)
+        {
+            biggerValue = upValue;
+        }
+        else if (upValue < downValue)
+        {
+            biggerValue = downValue;
+        }
+
+        if (upValue == downValue)
+        {
+            Level5();
+            return;
+        }
+
+        upText.text = firstNumber +  " - " + secondNumber + " + " + " (" + thirdNumber + " x " + secondNumber+ ") ";
+        downText.text = fifthNumber + " - " + fourthNumber + " + " + " (" + fourthNumber + " x " + sixthNumber + ") ";
     }
 
     public void ButtonValue(string buttonName)
@@ -138,10 +298,12 @@ public class GameManager : MonoBehaviour
             //Debug.Log("True");
             roundManager.OpenRoundScale(gameCounter % 5);
             gameCounter++;
+
+            WhichLevel();
         }
         else
         {
-            Debug.Log("False");
+            //Debug.Log("False");
         }
     }
 

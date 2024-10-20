@@ -23,5 +23,11 @@ public class RoundManager : MonoBehaviour
    public void OpenRoundScale(int isRound)
    {
         roundArray[isRound].GetComponent<RectTransform>().DOScale(1, 0.3f);
+
+        if (isRound % 5 == 0)
+        {
+            CloseRoundScale();
+        }
+    
    }
 }
